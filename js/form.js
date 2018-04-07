@@ -145,7 +145,7 @@
                     left: evtMove.clientX - coords.left
                 };
 
-                console.log(shift);
+                //console.log(shift);
 
                 sliderPin.style.left = shift.left + 'px';
                 sliderVal.style.width = shift.left + 'px';
