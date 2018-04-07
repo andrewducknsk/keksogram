@@ -123,7 +123,7 @@
     var sliderPin = sliderBar.querySelector('.upload-effect-level-pin');
     var sliderVal = sliderBar.querySelector('.upload-effect-level-val');
 
-    sliderPin.style.left = 50 + 'px';
+    sliderPin.style.left = 0;
     sliderVal.style.width = 0;
 
 
@@ -140,12 +140,9 @@
 
                 //console.log(coords.left);
 
-                coords = {
-                    left: evtMove.clientX
-                };
 
                 var shift = {
-                    left: coords.left - evtMove.clientX
+                    left: evtMove.clientX - coords.left
                 };
 
                 console.log(shift);
