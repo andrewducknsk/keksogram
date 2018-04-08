@@ -49,58 +49,205 @@
 
     uploadResizeImg.addEventListener('click', resizeImg());
 
-//-- применение эффекта
+    //-- слайдер фильтра
 
+    var sliderLine = sliderBar.querySelector('.upload-effect-level-line');
+    var sliderPin = sliderBar.querySelector('.upload-effect-level-pin');
+    var sliderVal = sliderBar.querySelector('.upload-effect-level-val');
     var effectControls = uploadForm.querySelector('.upload-effect-controls');
     var effectRadioBtn = effectControls.querySelectorAll('input');
     var effectImg = uploadForm.querySelector('.effect-image-preview');
 
+    sliderPin.style.left = 0;
+    sliderVal.style.width = 0;
 
-    var useEffectImg = function () {
+    sliderPin.addEventListener('mousedown', function (evt) {
+        evt.preventDefault();
 
-        effectControls.addEventListener('change', function (ev) {
+        var coords = {
+            left: sliderLine.getBoundingClientRect().left
+        };
 
+        var onMouseMove = function (evtMove) {
 
-            if (ev.target === effectRadioBtn[0]) {
-                effectImg.classList.add('effect-none');
-                sliderBar.style.display = 'none';
-            } else {
-               effectImg.classList.remove('effect-none');
-               sliderBar.style.display = "block";
+            evtMove.preventDefault();
+
+            var shift = {
+                left: evtMove.clientX - coords.left
+            };
+
+            sliderPin.style.left = shift.left + 'px';
+            sliderVal.style.width = shift.left + 'px';
+
+            if (shift.left <= 0) {
+
+                sliderPin.style.left = 0 + 'px';
+                sliderVal.style.width = 0 + 'px';
+
+            } else if (shift.left >= 455 ) {
+
+                sliderPin.style.left = 455 + 'px';
+                sliderVal.style.width = 455 + 'px';
             }
 
-            if (ev.target === effectRadioBtn[1]) {
-                effectImg.classList.add('effect-chrome');
-            } else {
-                effectImg.classList.remove('effect-chrome');
-            }
+            var useEffectImg = function () {
 
-            if (ev.target === effectRadioBtn[2]) {
-                effectImg.classList.add('effect-sepia');
-            } else {
-                effectImg.classList.remove('effect-sepia');
-            }
+                effectControls.addEventListener('change', function (ev) {
 
-            if (ev.target === effectRadioBtn[3]) {
-                effectImg.classList.add('effect-marvin');
-            } else {
-                effectImg.classList.remove('effect-marvin');
-            }
+                    if (ev.target === effectRadioBtn[0]) {
+                        effectImg.classList.add('effect-none');
+                        sliderBar.style.display = 'none';
+                        effectImg.style.filter = '';
+                    } else {
+                        effectImg.classList.remove('effect-none');
+                        sliderBar.style.display = "block";
+                    }
 
-            if (ev.target === effectRadioBtn[4]) {
-                effectImg.classList.add('effect-phobos');
-            } else {
-                effectImg.classList.remove('effect-phobos');
-            }
+                    if (ev.target === effectRadioBtn[1]) {
+                        effectImg.classList.add('effect-chrome');
+                        sliderPin.style.left = 0;
+                        sliderVal.style.width = 0;
+                        effectImg.style.filter = 'grayscale('+ +')';
+                    } else {
+                        effectImg.classList.remove('effect-chrome');
+                    }
 
-            if (ev.target === effectRadioBtn[5]) {
-                effectImg.classList.add('effect-heat');
-            } else {
-                effectImg.classList.remove('effect-heat');
-            }
-        });
+                    if (ev.target === effectRadioBtn[2]) {
+                        effectImg.classList.add('effect-sepia');
+                        sliderPin.style.left = 0;
+                        sliderVal.style.width = 0;
+                        sliderVal.style.width = 0;
+                        effectImg.style.filter = 'sepia(0)';
+                    } else {
+                        effectImg.classList.remove('effect-sepia');
+                    }
 
-    };
+                    if (ev.target === effectRadioBtn[3]) {
+                        effectImg.classList.add('effect-marvin');
+                        sliderPin.style.left = 0;
+                        sliderVal.style.width = 0;
+                        sliderVal.style.width = 0;
+                        effectImg.style.filter = 'invert(0)';
+                    } else {
+                        effectImg.classList.remove('effect-marvin');
+                    }
+
+                    if (ev.target === effectRadioBtn[4]) {
+                        effectImg.classList.add('effect-phobos');
+                        sliderPin.style.left = 0;
+                        sliderVal.style.width = 0;
+                        sliderVal.style.width = 0;
+                        effectImg.style.filter = 'blur(0)';
+                    } else {
+                        effectImg.classList.remove('effect-phobos');
+                    }
+
+                    if (ev.target === effectRadioBtn[5]) {
+                        effectImg.classList.add('effect-heat');
+                        sliderPin.style.left = 0;
+                        sliderVal.style.width = 0;
+                        sliderVal.style.width = 0;
+                        effectImg.style.filter = 'brightness(0)';
+                    } else {
+                        effectImg.classList.remove('effect-heat');
+                    }
+                });
+
+            };
+
+        };
+
+        var onMouseLeave = function () {
+
+            sliderBar.removeEventListener('mousemove', onMouseMove);
+        };
+
+        var onMouseUp = function (evtUp) {
+
+            evtUp.preventDefault();
+
+            sliderBar.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp)
+        };
+
+        sliderBar.addEventListener('mouseleave', onMouseLeave);
+        sliderBar.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+
+    });
+
+//-- применение эффекта
+
+    // var effectControls = uploadForm.querySelector('.upload-effect-controls');
+    // var effectRadioBtn = effectControls.querySelectorAll('input');
+    // var effectImg = uploadForm.querySelector('.effect-image-preview');
+
+    // var useEffectImg = function () {
+    //
+    //     effectControls.addEventListener('change', function (ev) {
+    //
+    //         var positionSliderPin = getComputedStyle(sliderPin);
+    //
+    //         if (ev.target === effectRadioBtn[0]) {
+    //             effectImg.classList.add('effect-none');
+    //             sliderBar.style.display = 'none';
+    //             effectImg.style.filter = '';
+    //         } else {
+    //            effectImg.classList.remove('effect-none');
+    //            sliderBar.style.display = "block";
+    //         }
+    //
+    //         if (ev.target === effectRadioBtn[1]) {
+    //             effectImg.classList.add('effect-chrome');
+    //             sliderPin.style.left = 0;
+    //             sliderVal.style.width = 0;
+    //             effectImg.style.filter = 'grayscale('+ +')';
+    //         } else {
+    //             effectImg.classList.remove('effect-chrome');
+    //         }
+    //
+    //         if (ev.target === effectRadioBtn[2]) {
+    //             effectImg.classList.add('effect-sepia');
+    //             sliderPin.style.left = 0;
+    //             sliderVal.style.width = 0;
+    //             sliderVal.style.width = 0;
+    //             effectImg.style.filter = 'sepia(0)';
+    //         } else {
+    //             effectImg.classList.remove('effect-sepia');
+    //         }
+    //
+    //         if (ev.target === effectRadioBtn[3]) {
+    //             effectImg.classList.add('effect-marvin');
+    //             sliderPin.style.left = 0;
+    //             sliderVal.style.width = 0;
+    //             sliderVal.style.width = 0;
+    //             effectImg.style.filter = 'invert(0)';
+    //         } else {
+    //             effectImg.classList.remove('effect-marvin');
+    //         }
+    //
+    //         if (ev.target === effectRadioBtn[4]) {
+    //             effectImg.classList.add('effect-phobos');
+    //             sliderPin.style.left = 0;
+    //             sliderVal.style.width = 0;
+    //             sliderVal.style.width = 0;
+    //             effectImg.style.filter = 'blur(0)';
+    //         } else {
+    //             effectImg.classList.remove('effect-phobos');
+    //         }
+    //
+    //         if (ev.target === effectRadioBtn[5]) {
+    //             effectImg.classList.add('effect-heat');
+    //             sliderPin.style.left = 0;
+    //             sliderVal.style.width = 0;
+    //             sliderVal.style.width = 0;
+    //             effectImg.style.filter = 'brightness(0)';
+    //         } else {
+    //             effectImg.classList.remove('effect-heat');
+    //         }
+    //     });
+    //
+    // };
 
     effectControls.addEventListener('change', useEffectImg());
 
@@ -116,65 +263,5 @@
             effectImg.style.transform = 'scale(1)';
         }
     };
-
-//-- слайдер фильтра
-
-    var sliderLine = sliderBar.querySelector('.upload-effect-level-line');
-    var sliderPin = sliderBar.querySelector('.upload-effect-level-pin');
-    var sliderVal = sliderBar.querySelector('.upload-effect-level-val');
-
-    sliderPin.style.left = 0;
-    sliderVal.style.width = 0;
-
-
-        sliderPin.addEventListener('mousedown', function (evt) {
-            evt.preventDefault();
-
-            var coords = {
-                left: evt.clientX
-            };
-
-            var onMouseMove = function (evtMove) {
-
-                evtMove.preventDefault();
-
-                //console.log(coords.left);
-
-
-                var shift = {
-                    left: evtMove.clientX - coords.left
-                };
-
-                //console.log(shift);
-
-                sliderPin.style.left = shift.left + 'px';
-                sliderVal.style.width = shift.left + 'px';
-
-
-                if (shift.left <= 0) {
-                    sliderPin.style.left = 0 + 'px';
-                    sliderVal.style.width = 0 + 'px';
-                } else if (shift.left >= 455 ) {
-                    sliderPin.style.left = 455 + 'px';
-                    sliderVal.style.width = 455 + 'px';
-                }
-
-            };
-
-            var onMouseLeave = function () {
-                sliderBar.removeEventListener('mousemove', onMouseMove);
-            };
-
-            var onMouseUp = function (evtUp) {
-                evtUp.preventDefault();
-                sliderLine.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp)
-            };
-
-            sliderBar.addEventListener('mouseleave', onMouseLeave);
-            sliderLine.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-
-    });
 
 }());
