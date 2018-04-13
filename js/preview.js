@@ -4,25 +4,25 @@
 
 //-- показ галлереи
 
-    var picture = document.querySelectorAll('.picture', 'a');
     var galleryClose = document.querySelector('.gallery-overlay-close');
 
-    var addEventPicture = function () {
+    window.addEventPicture = function () {
+
+        var picture = document.querySelectorAll('.picture', 'a');
 
         for ( var i = 0; i < picture.length; i++) {
-            picture[i].addEventListener('click', function (ev) {
-                ev.preventDefault();
-                galleryImageRender(ev);
-                galleryOverlay.classList.remove('hidden');
+            picture[i].addEventListener('click', function (evt) {
+                evt.preventDefault();
+                window.galleryImageRender(evt);
+                window.galleryOverlay.classList.remove('hidden');
             }, false);
         }
     };
 
-    addEventPicture();
 
-    galleryClose.addEventListener('click', function (ev) {
-        ev.preventDefault();
-        galleryOverlay.classList.add('hidden');
+    galleryClose.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        window.galleryOverlay.classList.add('hidden');
     });
 
 }());

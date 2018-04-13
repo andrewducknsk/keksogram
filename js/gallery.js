@@ -12,20 +12,39 @@
 
         pictureElement.querySelector('img').src = POST.url;
         pictureElement.querySelector('.picture-likes').textContent = POST.likes;
-        pictureElement.querySelector('.picture-comments').textContent = POST.comments;
+        pictureElement.querySelector('.picture-comments').textContent = POST.comments.length;
 
         return pictureElement;
     };
 
 //-- вставка сгенерированного шаблона
 
-    var fragment = document.createDocumentFragment();
+    var loadHandler = function (POST) {
 
-    for (var i = 0; i < window.POST.length; i++) {
-        fragment.appendChild(renderPicture(window.POST[i]));
-    }
+        var fragment = document.createDocumentFragment();
 
-    pictureContent.appendChild(fragment);
+        for (var i = 0; i < POST.length; i++) {
+            fragment.appendChild(renderPicture(POST[i]));
+        }
 
+        pictureContent.appendChild(fragment);
+
+        window.addEventPicture();
+    };
+
+    window.errorHandler = function (message) {
+
+        document.querySelector('.upload-message').classList.remove('hidden');
+        var errorMessageBox = document.querySelector('.upload-message-container');
+
+
+        errorMessageBox.style = 'position: relative; z-index = 100; text-align: center;';
+
+        errorMessageBox.textContent = message;
+
+        window.uploadOverlay.classList.add('hidden');
+    };
+
+    window.load(loadHandler, window.errorHandler);
 
 }());

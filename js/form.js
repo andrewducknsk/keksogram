@@ -6,19 +6,24 @@
 
     var uploadForm = document.querySelector('#upload-select-image');
     var uploadFieldFile = uploadForm.querySelector('#upload-file');
-    var uploadOverlay = uploadForm.querySelector('.upload-overlay');
-    var uploadOverlayClosed = uploadForm.querySelector('.upload-form-cancel');
+    window.uploadOverlay = uploadForm.querySelector('.upload-overlay');
+    var uploadOverlayClosedBtn = uploadForm.querySelector('.upload-form-cancel');
     var sliderBar = uploadForm.querySelector('.upload-effect-level');
 
     sliderBar.style.display = 'none';
 
-    uploadFieldFile.addEventListener('change', function () {
-        uploadOverlay.classList.remove('hidden');
-    });
+    var uploadOverlayHidden = function () {
 
-    uploadOverlayClosed.addEventListener('click', function () {
+        uploadOverlay.classList.remove('hidden');
+    };
+
+    var uploadOverlayClosed = function () {
+
         uploadOverlay.classList.add('hidden');
-    });
+    };
+
+    uploadFieldFile.addEventListener('change', uploadOverlayHidden);
+    uploadOverlayClosedBtn.addEventListener('click', uploadOverlayClosed);
 
 //-- форма ввода маштаба ограничена
 
@@ -49,14 +54,24 @@
 
     uploadResizeImg.addEventListener('click', resizeImg());
 
+    //-- применение маштаба
+
+    var useResizeImg = function () {
+
+        var valueImg = parseInt(uploadResizeImgValue.getAttribute('value'));
+
+        if (valueImg !== 100) {
+            effectImg.style.transform = 'scale(0.' + valueImg + ')';
+        } else {
+            effectImg.style.transform = 'scale(1)';
+        }
+    };
+
     //-- слайдер фильтра
 
     var sliderLine = sliderBar.querySelector('.upload-effect-level-line');
     var sliderPin = sliderBar.querySelector('.upload-effect-level-pin');
     var sliderVal = sliderBar.querySelector('.upload-effect-level-val');
-    var effectControls = uploadForm.querySelector('.upload-effect-controls');
-    var effectRadioBtn = effectControls.querySelectorAll('input');
-    var effectImg = uploadForm.querySelector('.effect-image-preview');
 
     sliderPin.style.left = 0;
     sliderVal.style.width = 0;
@@ -78,9 +93,9 @@
 
             sliderPin.style.left = shift.left + 'px';
             sliderVal.style.width = shift.left + 'px';
+            effectImg.style.filter = 'grayscale('+shift.left/455+')';
 
             if (shift.left <= 0) {
-
                 sliderPin.style.left = 0 + 'px';
                 sliderVal.style.width = 0 + 'px';
 
@@ -89,77 +104,12 @@
                 sliderPin.style.left = 455 + 'px';
                 sliderVal.style.width = 455 + 'px';
             }
-
-            var useEffectImg = function () {
-
-                effectControls.addEventListener('change', function (ev) {
-
-                    if (ev.target === effectRadioBtn[0]) {
-                        effectImg.classList.add('effect-none');
-                        sliderBar.style.display = 'none';
-                        effectImg.style.filter = '';
-                    } else {
-                        effectImg.classList.remove('effect-none');
-                        sliderBar.style.display = "block";
-                    }
-
-                    if (ev.target === effectRadioBtn[1]) {
-                        effectImg.classList.add('effect-chrome');
-                        sliderPin.style.left = 0;
-                        sliderVal.style.width = 0;
-                        effectImg.style.filter = 'grayscale('+ +')';
-                    } else {
-                        effectImg.classList.remove('effect-chrome');
-                    }
-
-                    if (ev.target === effectRadioBtn[2]) {
-                        effectImg.classList.add('effect-sepia');
-                        sliderPin.style.left = 0;
-                        sliderVal.style.width = 0;
-                        sliderVal.style.width = 0;
-                        effectImg.style.filter = 'sepia(0)';
-                    } else {
-                        effectImg.classList.remove('effect-sepia');
-                    }
-
-                    if (ev.target === effectRadioBtn[3]) {
-                        effectImg.classList.add('effect-marvin');
-                        sliderPin.style.left = 0;
-                        sliderVal.style.width = 0;
-                        sliderVal.style.width = 0;
-                        effectImg.style.filter = 'invert(0)';
-                    } else {
-                        effectImg.classList.remove('effect-marvin');
-                    }
-
-                    if (ev.target === effectRadioBtn[4]) {
-                        effectImg.classList.add('effect-phobos');
-                        sliderPin.style.left = 0;
-                        sliderVal.style.width = 0;
-                        sliderVal.style.width = 0;
-                        effectImg.style.filter = 'blur(0)';
-                    } else {
-                        effectImg.classList.remove('effect-phobos');
-                    }
-
-                    if (ev.target === effectRadioBtn[5]) {
-                        effectImg.classList.add('effect-heat');
-                        sliderPin.style.left = 0;
-                        sliderVal.style.width = 0;
-                        sliderVal.style.width = 0;
-                        effectImg.style.filter = 'brightness(0)';
-                    } else {
-                        effectImg.classList.remove('effect-heat');
-                    }
-                });
-
-            };
-
         };
 
         var onMouseLeave = function () {
 
             sliderBar.removeEventListener('mousemove', onMouseMove);
+
         };
 
         var onMouseUp = function (evtUp) {
@@ -173,95 +123,86 @@
         sliderBar.addEventListener('mouseleave', onMouseLeave);
         sliderBar.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
-
     });
 
 //-- применение эффекта
 
-    // var effectControls = uploadForm.querySelector('.upload-effect-controls');
-    // var effectRadioBtn = effectControls.querySelectorAll('input');
-    // var effectImg = uploadForm.querySelector('.effect-image-preview');
+    var effectControls = uploadForm.querySelector('.upload-effect-controls');
+    var effectRadioBtn = effectControls.querySelectorAll('input');
+    var effectImg = uploadForm.querySelector('.effect-image-preview');
 
-    // var useEffectImg = function () {
-    //
-    //     effectControls.addEventListener('change', function (ev) {
-    //
-    //         var positionSliderPin = getComputedStyle(sliderPin);
-    //
-    //         if (ev.target === effectRadioBtn[0]) {
-    //             effectImg.classList.add('effect-none');
-    //             sliderBar.style.display = 'none';
-    //             effectImg.style.filter = '';
-    //         } else {
-    //            effectImg.classList.remove('effect-none');
-    //            sliderBar.style.display = "block";
-    //         }
-    //
-    //         if (ev.target === effectRadioBtn[1]) {
-    //             effectImg.classList.add('effect-chrome');
-    //             sliderPin.style.left = 0;
-    //             sliderVal.style.width = 0;
-    //             effectImg.style.filter = 'grayscale('+ +')';
-    //         } else {
-    //             effectImg.classList.remove('effect-chrome');
-    //         }
-    //
-    //         if (ev.target === effectRadioBtn[2]) {
-    //             effectImg.classList.add('effect-sepia');
-    //             sliderPin.style.left = 0;
-    //             sliderVal.style.width = 0;
-    //             sliderVal.style.width = 0;
-    //             effectImg.style.filter = 'sepia(0)';
-    //         } else {
-    //             effectImg.classList.remove('effect-sepia');
-    //         }
-    //
-    //         if (ev.target === effectRadioBtn[3]) {
-    //             effectImg.classList.add('effect-marvin');
-    //             sliderPin.style.left = 0;
-    //             sliderVal.style.width = 0;
-    //             sliderVal.style.width = 0;
-    //             effectImg.style.filter = 'invert(0)';
-    //         } else {
-    //             effectImg.classList.remove('effect-marvin');
-    //         }
-    //
-    //         if (ev.target === effectRadioBtn[4]) {
-    //             effectImg.classList.add('effect-phobos');
-    //             sliderPin.style.left = 0;
-    //             sliderVal.style.width = 0;
-    //             sliderVal.style.width = 0;
-    //             effectImg.style.filter = 'blur(0)';
-    //         } else {
-    //             effectImg.classList.remove('effect-phobos');
-    //         }
-    //
-    //         if (ev.target === effectRadioBtn[5]) {
-    //             effectImg.classList.add('effect-heat');
-    //             sliderPin.style.left = 0;
-    //             sliderVal.style.width = 0;
-    //             sliderVal.style.width = 0;
-    //             effectImg.style.filter = 'brightness(0)';
-    //         } else {
-    //             effectImg.classList.remove('effect-heat');
-    //         }
-    //     });
-    //
-    // };
 
-    effectControls.addEventListener('change', useEffectImg());
+        effectControls.addEventListener('change', function (ev) {
 
-//-- применение маштаба
+            if (ev.target === effectRadioBtn[0]) {
+                effectImg.classList.add('effect-none');
+                sliderBar.style.display = 'none';
+                effectImg.style.filter = '';
+            } else {
+               effectImg.classList.remove('effect-none');
+               sliderBar.style.display = "block";
+            }
 
-    var useResizeImg = function () {
+            if (ev.target === effectRadioBtn[1]) {
+                effectImg.classList.add('effect-chrome');
+                sliderPin.style.left = 0;
+                sliderVal.style.width = 0;
+                effectImg.style.filter = 'grayscale(0)'
+            } else {
+                effectImg.classList.remove('effect-chrome');
+            }
 
-        var valueImg = parseInt(uploadResizeImgValue.getAttribute('value'));
+            if (ev.target === effectRadioBtn[2]) {
+                effectImg.classList.add('effect-sepia');
+                sliderPin.style.left = 0;
+                sliderVal.style.width = 0;
+                effectImg.style.filter = 'sepia(0)';
+            } else {
+                effectImg.classList.remove('effect-sepia');
+            }
 
-        if (valueImg !== 100) {
-            effectImg.style.transform = 'scale(0.' + valueImg + ')';
-        } else {
-            effectImg.style.transform = 'scale(1)';
-        }
-    };
+            if (ev.target === effectRadioBtn[3]) {
+                effectImg.classList.add('effect-marvin');
+                sliderPin.style.left = 0;
+                sliderVal.style.width = 0;
+                effectImg.style.filter = 'invert(0)';
+            } else {
+                effectImg.classList.remove('effect-marvin');
+            }
+
+            if (ev.target === effectRadioBtn[4]) {
+                effectImg.classList.add('effect-phobos');
+                sliderPin.style.left = 0;
+                sliderVal.style.width = 0;
+                effectImg.style.filter = 'blur(0)';
+            } else {
+                effectImg.classList.remove('effect-phobos');
+            }
+
+            if (ev.target === effectRadioBtn[5]) {
+                effectImg.classList.add('effect-heat');
+                sliderPin.style.left = 0;
+                sliderVal.style.width = 0;
+                effectImg.style.filter = 'brightness(0)';
+            } else {
+                effectImg.classList.remove('effect-heat');
+            }
+        });
+
+//-- отправка формы на сервер
+
+
+    uploadForm.addEventListener('submit', function (evt) {
+
+        window.upload(new FormData(uploadForm), function (response) {
+            uploadOverlay.classList.add('hidden');
+        }, function () {
+            window.errorHandler();
+        });
+
+        evt.preventDefault();
+        window.errorHandler();
+
+    });
 
 }());
