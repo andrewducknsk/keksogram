@@ -4,9 +4,7 @@
     //-- применение эффекта
 
     // нахождение контейнера с эффектами;
-    // нахождение все эффектов в контейнере;
-    var effectControls = uploadForm.querySelector('.upload-effect-controls'),
-        effectRadioBtn = effectControls.querySelectorAll('input');
+    var effectControls = uploadForm.querySelector('.upload-effect-controls');
 
     // нахождение элемента, к которому пременяются эффекты;
     window.effectImg = uploadForm.querySelector('.effect-image-preview');
@@ -23,7 +21,7 @@
     var changeEffectImg = function (ev) {
 
         // режим без эффектов
-        if (ev.target === effectRadioBtn[0]) {
+        if (ev.target.id === 'upload-effect-none') {
 
             effectImg.classList.add('effect-none');
             sliderBar.style.display = 'none';
@@ -34,7 +32,7 @@
         }
 
         // режим эффекта 'хром'
-        if (ev.target === effectRadioBtn[1]) {
+        if (ev.target.id === 'upload-effect-chrome') {
 
             changeSlider('effect-chrome');
             effectImg.style.filter = 'grayscale(0)';
@@ -48,7 +46,7 @@
         }
 
         // режим эффекта 'сепиа'
-        if (ev.target === effectRadioBtn[2]) {
+        if (ev.target.id === 'upload-effect-sepia') {
 
             changeSlider('effect-sepia');
             effectImg.style.filter = 'sepia(0)';
@@ -62,7 +60,7 @@
         }
 
         // режим эффекта 'сепиа'
-        if (ev.target === effectRadioBtn[3]) {
+        if (ev.target.id === 'upload-effect-marvin') {
 
             changeSlider('effect-marvin');
             effectImg.style.filter = 'invert(0)';
@@ -76,7 +74,7 @@
         }
 
         // режим эффекта 'фобос'
-        if (ev.target === effectRadioBtn[4]) {
+        if (ev.target.id === 'upload-effect-phobos') {
 
             changeSlider('effect-phobos');
             effectImg.style.filter = 'blur(0)';
@@ -90,7 +88,7 @@
         }
 
         // режим эффекта 'зной'
-        if (ev.target === effectRadioBtn[5]) {
+        if (ev.target.id === 'upload-effect-heat') {
 
             changeSlider('effect-heat');
             effectImg.style.filter = 'brightness(0)';
