@@ -68,7 +68,7 @@
 
         // функция переключения фильтров
         window.filterChange = function (ev) {
-            debounce(ev);
+            
             switch (ev.target) {
                 case sortRadioBtn[0]:
 
