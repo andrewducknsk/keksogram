@@ -1,24 +1,31 @@
 'use strict';
 
-//-- галлерея
+//-- отрисовка галлереи
 (function () {
 
+    // нахождение галлереи
     window.galleryOverlay = document.querySelector('.gallery-overlay');
 
-    window.galleryImageRender = function () {
+    // нахождение изображения, лайков и комментариев при включенной галлереи
+    var galleryOverlayImg = galleryOverlay.querySelector('.gallery-overlay-image', 'img'),
+        galleryOverlayLikes = galleryOverlay.querySelector('.likes-count'),
+        galleryOverlayComments = galleryOverlay.querySelector('.comments-count');
 
-        var galleryOverlayImg = galleryOverlay.querySelector('.gallery-overlay-image', 'img');
-        var galleryOverlayLikes = galleryOverlay.querySelector('.likes-count');
-        var galleryOverlayComments = galleryOverlay.querySelector('.comments-count');
+    // функция замены src, количества лайков и коменнтариев
+    window.changeDataGallery = function (ev) {
 
-        window.pictureContent.addEventListener('click', function (ev) {
-
-            galleryOverlayImg.src = ev.target.src;
-            galleryOverlayLikes.textContent = ev.target.nextElementSibling.children[1].innerText;
-            galleryOverlayComments.textContent = ev.target.nextElementSibling.children["0"].innerText;
-        });
-
+        galleryOverlayImg.src = ev.target.src;
+        galleryOverlayLikes.textContent = ev.target.nextElementSibling.children[1].innerText;
+        galleryOverlayComments.textContent = ev.target.nextElementSibling.children["0"].innerText;
     };
+
+    // функция отрисовки фотографий при клике на фотографию [под вопросом]
+    // window.galleryImageRender = function () {
+    //
+    // };
+
+    // отрисока фотографий, лайков и комментариев при клике на фотографию
+    window.pictureContent.addEventListener('click', changeDataGallery);
 
 }());
 

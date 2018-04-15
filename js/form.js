@@ -1,14 +1,18 @@
 'use strict';
 
 (function () {
-
     //-- форма загрузки нового изображения
 
-    var uploadForm = document.querySelector('#upload-select-image');
-    var uploadFieldFile = uploadForm.querySelector('#upload-file');
+    // нахождение формы отправки;
+    // нахождение input загрузки фотографии;
+    // нахождение кнопки закрытия редактора формы;
+    // нахождение редактора формы;
+    var uploadForm = document.querySelector('#upload-select-image'),
+        uploadFieldFile = uploadForm.querySelector('#upload-file'),
+        uploadOverlayClosedBtn = uploadForm.querySelector('.upload-form-cancel'),
+        sliderBar = uploadForm.querySelector('.upload-effect-level');
+
     window.uploadOverlay = uploadForm.querySelector('.upload-overlay');
-    var uploadOverlayClosedBtn = uploadForm.querySelector('.upload-form-cancel');
-    var sliderBar = uploadForm.querySelector('.upload-effect-level');
 
     sliderBar.style.display = 'none';
 
@@ -196,13 +200,9 @@
 
         window.upload(new FormData(uploadForm), function (response) {
             uploadOverlay.classList.add('hidden');
-        }, function () {
-            window.errorHandler();
         });
 
         evt.preventDefault();
-        window.errorHandler();
-
     });
 
 }());

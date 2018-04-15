@@ -1,28 +1,36 @@
 'use strict';
 
+//-- показ галлереи
 (function() {
 
-//-- показ галлереи
+    // нахождение кнопки закрытия галлереи
+    var galleryCloseBtn = document.querySelector('.gallery-overlay-close');
 
-    var galleryClose = document.querySelector('.gallery-overlay-close');
-
+    // функция добавления обработчиков к элементам в контейнере
     window.addEventPicture = function () {
 
-        var picture = document.querySelectorAll('.picture', 'a');
+        // нахождение всех элементов контейнера
+        window.picture = document.querySelectorAll('.picture', 'a');
 
-        for ( var i = 0; i < picture.length; i++) {
-            picture[i].addEventListener('click', function (evt) {
-                evt.preventDefault();
-                window.galleryImageRender(evt);
+        // перебор массива со всеми элементами контейнера
+        window.picture.forEach(function (value, i) {
+
+            picture[i].addEventListener('click', function (ev) {
+
+                ev.preventDefault();
+                window.changeDataGallery(ev);
                 window.galleryOverlay.classList.remove('hidden');
-            }, false);
-        }
+            });
+        })
     };
 
+    // функция закрытия галлереи
+    var galleryClose = function (ev) {
 
-    galleryClose.addEventListener('click', function (evt) {
-        evt.preventDefault();
+        ev.preventDefault();
         window.galleryOverlay.classList.add('hidden');
-    });
+    };
 
+    // добавление обработчика для закрытия галлереи
+    galleryCloseBtn.addEventListener('click', galleryClose);
 }());
