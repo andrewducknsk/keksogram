@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
 //-- изменение и отрисовка шаблона
 
@@ -27,22 +28,31 @@
     // нахождение контейнера с вариантами сортировки;
     // нахождение всех способов сортировки этого контейнера;
     // создание фрагмента для вставки массивов в контейнер с фотографиями;
+    // создание переменной для сохранения последнего назначения таймера(debounce);
     var sortOptionsBox = document.querySelector('.filters'),
         sortRadioBtn = sortOptionsBox.querySelectorAll('input'),
-        fragment = document.createDocumentFragment();
+        fragment = document.createDocumentFragment(),
+        prevTimeout;
 
 
-    // отрисовка оригинального массива получаемого с сервера
-    var originalArr = function (POST) {
+    // функция перебора и отрисовки массивов
+    var arrScan = function (nameArr) {
 
-        // неотсортированный массив (рекомендуемые)
-        POST.forEach(function (value, i) {
+        // сбрасывание последнего значения таймера;
+        // установка таймера;
+        window.clearTimeout(prevTimeout);
+        prevTimeout = window.setTimeout(function () {
 
-            fragment.appendChild(window.renderPicture(POST[i]));
-        });
+            // перебор массива
+            nameArr.forEach(function (value, i) {
 
-        // вставка отрисованного массива
-        window.pictureContent.appendChild(fragment);
+                // отрисовка массива
+                fragment.appendChild(window.renderPicture(nameArr[i]));
+            });
+
+            // вставка отрисованного массива
+            window.pictureContent.appendChild(fragment);
+        }, 500);//0.3s
     };
 
     // Удаление элементов в контейнере с фотографиями
@@ -58,12 +68,12 @@
 
         // функция переключения фильтров
         window.filterChange = function (ev) {
-
+            debounce(ev);
             switch (ev.target) {
                 case sortRadioBtn[0]:
 
                     removeChild();
-                    originalArr(POST);
+                    arrScan(POST);
                     break;
 
                 case sortRadioBtn[1]:
@@ -75,14 +85,7 @@
                         return second.likes - first.likes;
                     });
 
-                    // отрисовка элементов массива
-                    likePostSort.forEach(function (value, i) {
-
-                        fragment.appendChild(window.renderPicture(likePostSort[i]));
-                    });
-
-                    // вставка отрисованого массива
-                    window.pictureContent.appendChild(fragment);
+                    arrScan(likePostSort);
                     break;
 
                 case sortRadioBtn[2]:
@@ -94,14 +97,7 @@
                         return second.comments.length - first.comments.length;
                     });
 
-                    // отрисовка элементов массива
-                    commentsPostSort.forEach(function (value, i) {
-
-                        fragment.appendChild(window.renderPicture(commentsPostSort[i]));
-                    });
-
-                    // вставка отрисованого массива
-                    window.pictureContent.appendChild(fragment);
+                    arrScan(commentsPostSort);
                     break;
 
                 case sortRadioBtn[3]:
@@ -113,21 +109,14 @@
                         return Math.random() - 0.5;
                     });
 
-                    // отрисовка элементов массива
-                    randomPostSort.forEach(function (value, i) {
-
-                        fragment.appendChild(window.renderPicture(randomPostSort[i]));
-                    });
-
-                    // вставка отрисованого массива
-                    window.pictureContent.appendChild(fragment);
+                    arrScan(randomPostSort);
                     break;
             }
             // добавление обработчиков на элементы в контейнере
             window.addEventPicture();
         };
         // первая отрисовка при загрузке страницы
-        originalArr(POST);
+        arrScan(POST);
 
         // добавление обработчиков на элементы в контейнере
         window.addEventPicture();
