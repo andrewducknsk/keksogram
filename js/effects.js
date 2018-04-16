@@ -38,8 +38,8 @@
             effectImg.style.filter = 'grayscale(0)';
 
             // добавление стиля filter и изменение его значения
-            window.go = function () {
-                effectImg.style.filter = 'grayscale('+shift/455+')';
+            window.updateValueEffect = function () {
+                effectImg.style.filter = 'grayscale('+shift/sliderLineWidth+')';
             };
         } else {
             effectImg.classList.remove('effect-chrome');
@@ -52,8 +52,8 @@
             effectImg.style.filter = 'sepia(0)';
 
             // добавление стиля filter и изменение его значения
-            window.go = function () {
-                effectImg.style.filter = 'sepia('+shift/455+')';
+            window.updateValueEffect = function () {
+                effectImg.style.filter = 'sepia('+shift/sliderLineWidth+')';
             };
         } else {
             effectImg.classList.remove('effect-sepia');
@@ -66,8 +66,8 @@
             effectImg.style.filter = 'invert(0)';
 
             // добавление стиля filter и изменение его значения
-            window.go = function () {
-                effectImg.style.filter = 'invert('+shift/4.55+'%)';
+            window.updateValueEffect = function () {
+                effectImg.style.filter = 'invert('+shift/(sliderLineWidth / 100) +'%)';
             };
         } else {
             effectImg.classList.remove('effect-marvin');
@@ -80,8 +80,8 @@
             effectImg.style.filter = 'blur(0)';
 
             // добавление стиля filter и изменение его значения
-            window.go = function () {
-                effectImg.style.filter = 'blur('+shift/151+'px)';
+            window.updateValueEffect = function () {
+                effectImg.style.filter = 'blur('+shift/(sliderLineWidth / 3)+'px)';
             };
         } else {
             effectImg.classList.remove('effect-phobos');
@@ -94,8 +94,8 @@
             effectImg.style.filter = 'brightness(0)';
 
             // добавление стиля filter и изменение его значения
-            window.go = function () {
-                effectImg.style.filter = 'brightness('+shift/151+')';
+            window.updateValueEffect = function () {
+                effectImg.style.filter = 'brightness('+shift/(sliderLineWidth / 3)+')';
             };
         } else {
             effectImg.classList.remove('effect-heat');

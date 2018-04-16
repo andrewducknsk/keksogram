@@ -52,7 +52,10 @@
 
             // вставка отрисованного массива
             window.pictureContent.appendChild(fragment);
-        }, 500);//0.3s
+
+            // добавление обработчиков на элементы в контейнере
+            window.addEventPicture();
+        }, 500);//0.5s
     };
 
     // Удаление элементов в контейнере с фотографиями
@@ -112,14 +115,9 @@
                     arrScan(randomPostSort);
                     break;
             }
-            // добавление обработчиков на элементы в контейнере
-            window.addEventPicture();
         };
         // первая отрисовка при загрузке страницы
         arrScan(POST);
-
-        // добавление обработчиков на элементы в контейнере
-        window.addEventPicture();
 
         // добавление обработчиков для переключения фильтров
         sortOptionsBox.addEventListener('change', filterChange);

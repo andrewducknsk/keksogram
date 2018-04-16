@@ -1,18 +1,18 @@
 'use strict';
 
 (function () {
-
-    //-- слайдер фильтра
+//-- слайдер фильтра
 
     // нахождение линии движения слайдера
-
     var sliderLine = document.querySelector('.upload-effect-level-line');
-    var effectImg = uploadForm.querySelector('.effect-image-preview');
+    window.resultInput = document.querySelector('.input-value');
 
     // нахождение точки для перемещения слайдера
     // нахождение линии для оформления слайдера
     window.sliderPin = document.querySelector('.upload-effect-level-pin');
     window.sliderVal = document.querySelector('.upload-effect-level-val');
+
+    var eventChange = new Event('change');
 
     // функция для работы слайдера
     var sliderMove = function (ev) {
@@ -25,6 +25,9 @@
         var onMouseMove = function (evMove) {
             evMove.preventDefault();
 
+            // нахождение ширины слайдера
+            window.sliderLineWidth = sliderLine.offsetWidth;
+
             // рассчет изменения координат точки
             // (координаты начала движения - координаты линии движения относительно левого края окна при нажатии)
             window.shift = evMove.clientX - coords;
@@ -34,18 +37,20 @@
             // запись рассчета координат в стили фильтра и рассчет значения фильтра
             sliderPin.style.left = shift + 'px';
             sliderVal.style.width = shift + 'px';
-
-            go();
-
+            updateValueEffect();
             // если рассчитанные координаты точки меньше 0, то значние становится равны 0;
             // если рассчитанные координаты точки больше 455, то значние становится равны 455;
             if (shift <= 0) {
                 sliderPin.style.left = 0 + 'px';
                 sliderVal.style.width = 0 + 'px';
+                window.resultInput.value = 0;
 
-            } else if (shift >= 455 ) {
-                sliderPin.style.left = 455 + 'px';
-                sliderVal.style.width = 455 + 'px';
+            } else if (shift >= sliderLineWidth ) {
+                sliderPin.style.left = sliderLineWidth + 'px';
+                sliderVal.style.width = sliderLineWidth + 'px';
+                window.resultInput.value = 100;
+            } else {
+                window.resultInput.value = Math.ceil(shift / sliderLineWidth * 100);
             }
 
         };
@@ -69,11 +74,12 @@
         // добавление обработчика для покидания курсора мыши заданной области;
         // добавление обработчика для перемещения точки;
         // добавление обработчика для отпускания кнопки мыши;
+        //
         sliderBar.addEventListener('mouseleave', onMouseLeave);
         sliderBar.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
+        window.resultInput.dispatchEvent(eventChange);
     };
-
     // добавление обработчика при нажатии на кнопку мыши
     sliderPin.addEventListener('mousedown', sliderMove);
 

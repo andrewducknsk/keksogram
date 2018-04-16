@@ -19,11 +19,6 @@
         galleryOverlayComments.textContent = ev.target.nextElementSibling.children["0"].innerText;
     };
 
-    // функция отрисовки фотографий при клике на фотографию [под вопросом]
-    // window.galleryImageRender = function () {
-    //
-    // };
-
     // отрисока фотографий, лайков и комментариев при клике на фотографию
     window.pictureContent.addEventListener('click', changeDataGallery);
 
